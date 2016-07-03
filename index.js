@@ -1,59 +1,21 @@
 'use strict';
 
-const Hapi = require('hapi');
-const Good = require('good');
+const hapiServer = require('./lib/server');
+const api = require('./lib/plugin/api');
 
-const server = new Hapi.Server();
-server.connection({ port: 3000 });
-
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (req, reply) {
-        reply('Hello, world!');
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/{name}',
-    handler: function (req, reply) {
-        reply('Hello, ' + encodeURIComponent(req.params.name) + '!');
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/v1/sample',
-    handler: function (req, reply) {
-        reply({
-            id: 1,
-            origin: "This is sample sentence.",
-            separate: ["This", "is", "sample", "sentence"]
-        });
-    }
-});
-
-
-server.register({
-    register: Good,
-    options: {
-        reporters: {
-            console: [{
-                module: 'good-squeeze',
-                name: 'Squeeze',
-                args: [{
-                    response: '*',
-                    log: '*'
-                }]
-            }, {
-                module: 'good-console'
-            }, 'stdout']
+var options = {
+    plugin: api,
+    pluginOptions: {
+        routes: {
+            prefix: '/v1'
         }
     }
-}, (err) => {
+};
+
+hapiServer.create(options, function(err, server){
 
     if (err) {
+        //TBD
         throw err; // something bad happened loading the plugin
     }
 
@@ -65,3 +27,5 @@ server.register({
         server.log('info', 'Server running at: ' + server.info.uri);
     });
 });
+
+//TBD daemon
