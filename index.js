@@ -3,7 +3,7 @@
 const hapiServer = require('./lib/server');
 const api = require('./lib/plugin/api');
 
-var options = {
+const options = {
     plugin: api,
     pluginOptions: {
         routes: {
@@ -11,6 +11,16 @@ var options = {
         }
     }
 };
+
+const plugins = [{
+    plugin: api,
+    pluginOptions: {
+        routes: {
+            prefix: '/v1'
+        }
+    }
+}];
+
 
 hapiServer.create(options, function(err, server){
 

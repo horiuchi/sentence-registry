@@ -1,4 +1,9 @@
 {
     "server": {
+        "connections":{
+            "router": {
+                "stripTrailingSlash": true
+            }
+        }
     }
 }
