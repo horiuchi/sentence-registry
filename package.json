@@ -2,8 +2,8 @@
   "name": "sentence-registry",
   "scripts": {
     "prestart": "redis-cli ping > /dev/null 2>&1 || redis-server ./redis/redis.conf",
-    "start": "node index.js",
-    "stop" : "redis-cli shutdown",
+    "start": "pm2 start index.js -i max --name sentenceRegistry",
+    "stop": "pm2 stop all && redis-cli shutdown",
     "preinitialize": "redis-cli ping > /dev/null 2>&1 || redis-server ./redis/redis.conf",
     "initialize": "redis-cli set sequence 0"
   },
@@ -15,6 +15,7 @@
     "good-squeeze": "^4.0.0",
     "hapi": "^13.4.1",
     "items": "^2.1.0",
+    "pm2": "^1.1.3",
     "redis": "^2.6.2"
   }
 }
